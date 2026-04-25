@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outfit Match - AI Outfit Recommendation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">✧</span>
+                <span class="logo-text">Outfit Match</span>
+            </div>
+            <p class="tagline">AI Smart Wardrobe · Full-Body Outfit Analysis</p>
+        </header>
+
+        <main class="main-content">
+            <div class="split-layout">
+                <div class="left-panel">
+                    <div class="upload-section" id="uploadSection">
+                        <h2 class="section-title">Upload Full-Body Outfit Photos</h2>
+                        <p class="section-hint">Upload 1-5 full-body photos, AI will automatically detect clothing and recommend the best outfit combination</p>
+                        
+                        <div class="upload-area-large" id="uploadArea">
+                            <div class="upload-icon-large">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <h3 class="upload-title-large">Drag & Drop Multiple Full-Body Photos</h3>
+                            <p class="upload-hint-large">Or click to select files, supports JPG, PNG, WEBP formats</p>
+                            <p class="upload-limit">Recommend uploading 1-5 photos for more outfit options</p>
+                            <input type="file" id="fileInput" accept="image/*" multiple hidden>
+                        </div>
+
+                        <div class="uploaded-images-grid" id="uploadedImagesGrid" style="display: none;">
+                            <h3 class="grid-title">Uploaded Photos</h3>
+                            <div class="images-grid" id="imagesGrid"></div>
+                        </div>
+
+                        <button class="analyze-btn" id="analyzeBtn" disabled>
+                            <span class="btn-text">Start Smart Analysis</span>
+                            <span class="btn-loading" style="display: none;">
+                                <span class="spinner"></span>
+                                AI Analyzing...
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="right-panel">
+                    <div class="result-placeholder" id="resultPlaceholder">
+                        <div class="placeholder-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <path d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/>
+                            </svg>
+                        </div>
+                        <p class="placeholder-text">Upload full-body outfit photos<br>AI will automatically detect clothing and recommend the best combination</p>
+                    </div>
+
+                    <div class="result-section" id="resultSection" style="display: none;">
+                        <div class="result-card">
+                            <h3 class="result-title">✨ AI Outfit Recommendation</h3>
+
+                            <div class="items-combination-wrapper">
+                                <div class="detected-items">
+                                    <h4 class="detected-title">Detected Clothing</h4>
+                                    <div class="items-grid" id="itemsGrid"></div>
+                                </div>
+
+                                <div class="combination-display">
+                                    <h4 class="combination-title">Recommended Outfit</h4>
+                                    <div class="combination-images">
+                                        <div class="combo-item" id="comboTopItem" style="display: none;">
+                                            <div class="combo-label">Top</div>
+                                            <img id="comboTop" src="" alt="Top">
+                                        </div>
+                                        <div class="combo-item" id="comboPantsItem" style="display: none;">
+                                            <div class="combo-label">Bottom</div>
+                                            <img id="comboPants" src="" alt="Bottom">
+                                        </div>
+                                        <div class="combo-item" id="comboShoesItem" style="display: none;">
+                                            <div class="combo-label">Shoes</div>
+                                            <img id="comboShoes" src="" alt="Shoes">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="score-display">
+                                <div class="score-circle-large" id="overallScoreCircle">
+                                    <span class="score-value-large" id="overallScore">0.0</span>
+                                </div>
+                                <div class="score-info">
+                                    <div class="score-label-large">Outfit Coordination</div>
+                                    <div class="score-desc" id="scoreDesc">Calculating...</div>
+                                </div>
+                            </div>
+
+                            <div class="evaluation-block">
+                                <h4 class="block-title">
+                                    <span class="block-icon">◈</span>
+                                    Outfit Evaluation
+                                </h4>
+                                <p class="evaluation-text" id="evaluationText">Loading evaluation...</p>
+                            </div>
+
+                            <div class="suggestions-grid">
+                                <div class="suggestion-card">
+                                    <h4 class="suggestion-title">
+                                        <span class="suggestion-icon">◎</span>
+                                        Color Suggestions
+                                    </h4>
+                                    <p class="suggestion-text" id="colorSuggestion">Loading...</p>
+                                </div>
+                                <div class="suggestion-card">
+                                    <h4 class="suggestion-title">
+                                        <span class="suggestion-icon">◇</span>
+                                        Style Suggestions
+                                    </h4>
+                                    <p class="suggestion-text" id="styleSuggestion">Loading...</p>
+                                </div>
+                            </div>
+
+                            <div class="tags-block">
+                                <h4 class="block-title">
+                                    <span class="block-icon">✦</span>
+                                    Style Tags
+                                </h4>
+                                <div class="tags-list" id="trendTags"></div>
+                            </div>
+
+                            <button class="reset-btn" id="resetBtn">Analyze Again</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+                <div class="loading-content">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">AI is detecting clothing and analyzing outfit...</p>
+                    <p class="loading-subtext">This may take 10-30 seconds, please be patient</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Powered by AI Fashion Analysis · Outfit Match 2024</p>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
